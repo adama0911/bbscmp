@@ -1,0 +1,471 @@
+<div class="container">
+        <div class="row head">
+  
+        </div>
+        <div class="row body">
+            <div class="col-lg-3">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" [(ngModel)]="oneAtATime">
+                        Open only one at a time
+                    </label>
+                </div>
+            </div>
+            <div class="col-lg-3" >
+                <input type="date" id="from" name="from" bsDatepicker ngModel [(ngModel)]="date1" value="{{ date1 | date:'yyyy-MM-dd' }}" class="form-control">
+            </div>
+            <div class="col-lg-1" style="text-align:center">
+                <span>a</span>
+            </div>
+            <div class="col-lg-3" >
+                    <input type="date" id="from" name="from" bsDatepicker ngModel [(ngModel)]="date2" value="{{ date2 | date:'yyyy-MM-dd' }}" class="form-control">
+            </div>
+            <div class="col-lg-2" >
+                <input [disabled]="!date1 && !date2" type="button"  class="btn btn-success" value="recherche" (click)="intervel('intervalle')">
+            </div>
+            <div class="col-lg-12" style="font-size:small;">
+                <accordion  [closeOthers]="oneAtATime">
+                    <!--  ----------------------------------------------------
+                                              TNT
+                    ------------------------------------------------------------ -->
+                    <accordion-group heading="TNT" panelClass="{{tnts.etat}}" >
+                        <div>
+                            <tabset #staticTabs>
+                                <tab heading="Sentool: Totals Operations({{tntTotalTransSentool}}) Montant ({{tntTotalMontantSentool}})" [ngStyle]="">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <input type="text" class="form-control input-sm" placeholder="rechercher..." (keyup)="changerMotif($event)">
+                                            </tr>
+                                            <tr>
+                                                <th>Nom Operation</th>
+                                                <th>Montant</th>
+                                                <th>InfoSup</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let tnt of this.tntsSentool">
+                                                <td class="{{tnt.class}}">
+                                                        {{tnt.type}}
+                                                </td>
+                                                <td class="{{tnt.class}}">
+                                                    <span *ngIf="tnt.montant!='undefined'" >{{tnt.montant}}</span>
+                                                    <span *ngIf="tnt.prix!='undefined'" >{{tnt.prix}}</span>
+                                                </td>
+                                                <td class="{{tnt.class}}">
+                                                        [<span *ngIf="tnt.tel!='undefined'" ><b>tel:</b> {{tnt.tel}}</span>,
+                                                         <span *ngIf="tnt.n_chip!='undefined'" ><b> n_chip:</b>{{tnt.n_chip}}</span>,
+                                                         <span *ngIf="tnt.n_carte!='undefined'" ><b> n_carte:</b>{{tnt.n_carte}}</span>,
+                                                         <span *ngIf="tnt.nom!='undefined'" ><b>nom:</b>{{tnt.prenom}}</span>,
+                                                        ]
+                                                </td>
+                                            </tr>      
+                                        </tbody>
+                                    </table>
+                                </tab>
+                                <tab heading="Partenaire: Totals Operations({{tntTotalTransPartenaire}}) Montant ({{tntTotalMontantpartenaire}})">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <input type="text" class="form-control input-sm" placeholder="rechercher..." (keyup)="changerMotif($event)">
+                                                </tr>
+                                                <tr>
+                                                    <th>Nom Operation</th>
+                                                    <th>Montant</th>
+                                                    <th>InfoSup</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let tnt of tntsPartenaire | filterBy: ['n_chip', 'prenom','nom', 'tel','montant']: motif | orderBy: motif1">
+                                                        <td class="{{tnt.class}}">
+                                                                {{tnt.type}}
+                                                        </td>
+                                                        <td class="{{tnt.class}}">
+                                                            <span *ngIf="tnt.montant!='undefined'" >{{tnt.montant}}</span>
+                                                            <span *ngIf="tnt.prix!='undefined'" >{{tnt.prix}}</span>
+                                                        </td>
+                                                        <td class="{{tnt.class}}">
+                                                                [<span *ngIf="tnt.tel!='undefined'" ><b>tel:</b> {{tnt.tel}}</span>,
+                                                                    <span *ngIf="tnt.n_chip!='undefined'" ><b> n_chip:</b>{{tnt.n_chip}}</span>,
+                                                                    <span *ngIf="tnt.n_carte!='undefined'" ><b> n_carte:</b>{{tnt.n_carte}}</span>,
+                                                                    <span *ngIf="tnt.nom!='undefined'" ><b>nom:</b>{{tnt.prenom}}</span>,
+                                                                ]
+                                                        </td>
+                                                </tr>      
+                                            </tbody>
+                                        </table>
+                                </tab>
+                                <tab heading="Tafique: Totals Operations({{tntTotalTranstrafique}}) Montant ({{tntTotalMontanttrafique}})">
+
+                                </tab>
+                                <tab heading="Confrontation">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <input type="text" class="form-control input-sm" placeholder="rechercher..." (keyup)="changerMotif($event)">
+                                            </tr>
+                                            <tr>
+                                                <th>Nom Operation</th>
+                                                <th>Montant</th>
+                                                <th>InfoSup</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let tnt of this.tntsConf">
+                                                <td class="{{tnt.class}}">
+                                                        {{tnt.type}}
+                                                </td>
+                                                <td class="{{tnt.class}}">
+                                                    <span *ngIf="tnt.montant!='undefined'" >{{tnt.montant}}</span>
+                                                    <span *ngIf="tnt.prix!='undefined'" >{{tnt.prix}}</span>
+                                                </td>
+                                                <td class="{{tnt.class}}">
+                                                        [<span *ngIf="tnt.tel!='undefined'" ><b>tel:</b> {{tnt.tel}}</span>,
+                                                            <span *ngIf="tnt.n_chip!='undefined'" ><b> n_chip:</b>{{tnt.n_chip}}</span>,
+                                                            <span *ngIf="tnt.n_carte!='undefined'" ><b> n_carte:</b>{{tnt.n_carte}}</span>,
+                                                            <span *ngIf="tnt.nom!='undefined'" ><b>nom:</b>{{tnt.prenom}}</span>,
+                                                        ]
+                                                </td>
+                                            </tr>      
+                                        </tbody>
+                                    </table>
+                                </tab>
+                            </tabset>
+                        </div>   
+                    </accordion-group >
+                    <!--  ----------------------------------------------------
+                                              WIZALL
+                    ------------------------------------------------------------ -->
+                    <accordion-group heading="WIZALL" panelClass="{{this.wizalls.etat}}">
+                        <div>
+                            <tabset #staticTabs>
+                                <tab heading="Sentool: Totals Operations({{wizallTotalTransSentool}}) Montant ({{wizallTotalMontantSentool}})">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <input type="text" class="form-control input-sm" placeholder="rechercher..." (keyup)="changerMotif($event)">
+                                                </tr>
+                                                <tr>
+                                                    <th>id</th>
+                                                    <th>Type</th>
+                                                    <th>Montant</th>
+                                                    <th>info</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let wizall of wizallsSentool">
+                                                    <td class="{{wizall.class}}">
+                                                            <span *ngIf="wizall.idtrans!='undefined'"><a href="#" (click)="detailsFunc(wizall)">{{wizall.idtrans}}</a></span>
+                                                            <span *ngIf="wizall.transactionid!='undefined'"><a href="#" (click)="detailsFunc(wizall)">{{wizall.transactionid}}</a></span>
+                                                            <span *ngIf="wizall.id!='undefined'"><a href="#" (click)="detailsFunc(wizall)">{{wizall.id}}</a></span>
+                                                    </td>
+                                                    <td class="{{wizall.class}}">
+                                                            <div *ngIf="wizall.type!='undefined'">{{wizall.type}}</div>
+                                                    </td>
+                                                    <td class="{{wizall.class}}">
+                                                            <span *ngIf="wizall.amount!='undefined'">{{wizall.amount}}</span>
+                                                            <span *ngIf="wizall.montant!='undefined'">{{wizall.montant}}</span>
+                                                    </td>
+                                                    <td class="{{wizall.class}}">
+                                                            [<!-- [<span *ngIf="tnt.sender!='undefined'"><b>sender:</b> {{wizall.sender}}</span>, -->
+                                                            <!-- <span *ngIf="tnt.receiver!='undefined'" ><b>receiver:</b>{{wizall.receiver}}</span>, -->
+                                                           ]
+                                                    </td>
+                                                </tr>      
+                                            </tbody>
+                                        </table>
+                                </tab>
+                                <tab heading="Partenaire: Totals Operations({{wizallTotalTranspartenaire}}) Montant ({{wizallTotalMontantpartenaire}})">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <input type="text" class="form-control input-sm" placeholder="rechercher..." (keyup)="changerMotif($event)">
+                                            </tr>
+                                            <tr>
+                                                <th>id</th>
+                                                <th>Type</th>
+                                                <th>Montant</th>
+                                                <th>info</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let wizall of wizallspartenaire">
+                                                <td class="{{wizall.class}}">
+                                                        <span *ngIf="wizall.idtrans!='undefined'"><a href="#" (click)="infoTransaction(wizall)">{{wizall.idtrans}}</a></span>
+                                                        <span *ngIf="wizall.transactionid!='undefined'"><a href="#" (click)="infoTransaction(wizall)">{{wizall.transactionid}}</a></span>
+                                                        <span *ngIf="wizall.id!='undefined'"><a href="#" (click)="infoTransaction(wizall)">{{wizall.id}}</a></span>
+                                                </td>
+                                                <td class="{{wizall.class}}">
+                                                        <div *ngIf="wizall.TOKEN!='undefined'">{{wizall.TOKEN}}</div>
+                                                        <div *ngIf="wizall.type!='undefined'">{{wizall.type}}</div>
+                                                        <div *ngIf="wizall.police!='undefined'">{{wizall.police}}</div>
+                                                </td>
+                                                <td class="{{wizall.class}}">
+                                                        <span *ngIf="wizall.amount!='undefined'">{{wizall.amount}}</span>
+                                                        <span *ngIf="wizall.montant!='undefined'">{{wizall.montant}}</span>
+                                                </td>
+                                                <td class="{{wizall.class}}">
+                                                        [<!-- [<span *ngIf="tnt.sender!='undefined'"><b>sender:</b> {{wizall.sender}}</span>, -->
+                                                        <!-- <span *ngIf="tnt.receiver!='undefined'" ><b>receiver:</b>{{wizall.receiver}}</span>, -->
+                                                       ]
+                                                </td>
+                                            </tr>      
+                                        </tbody>
+                                    </table>
+                                </tab>
+                                <tab heading="Tafique: Totals Operations({{wizallTotalTranstrafique}}) Montant({{wizallTotalMontanttrafique}})">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <input type="text" class="form-control input-sm" placeholder="rechercher..." (keyup)="changerMotif($event)">
+                                                </tr>
+                                                <tr>
+                                                    <th>Depends_On</th>
+                                                    <th>Infos</th>
+                                                    <th>Montant</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let w of wizallswizall ">
+                                                    <td style="background-color:white;"><a (click)="infosSup(w)" href="#">{{w.dependsOn}}</a></td>
+                                                    <td style="background-color:white;">
+                                                        <span  *ngIf="w.customer!='undefined'">{{w.customer}}</span>
+                                                        <span *ngIf="w.compteur!='undefined' ">{{w.compteur}}</span>
+                                                        <span *ngIf="w.receiver_phone_number!='undefined' ">{{w.receiver_phone_number}}</span>
+                                                        <span *ngIf="w.police!='undefined' ">{{w.police}}</span>
+                                                    </td>
+                                                    <td style="background-color:white;">
+                                                        <span  *ngIf="w.montant!='undefined'">{{w.montant}}</span>
+                                                        <span *ngIf="w.amount!='undefined' ">{{w.amount}}</span>
+                                                    </td>
+                                                </tr>      
+                                            </tbody>
+                                        </table>
+                                </tab>
+                                <tab heading="Confrontation">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <input type="text" class="form-control input-sm" placeholder="rechercher..." (keyup)="changerMotif($event)">
+                                            </tr>
+                                            <tr>
+                                                <th>id</th>
+                                                <th>Type</th>
+                                                <th>Montant</th>
+                                                <th>info</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let wizall of wizallsConf">
+                                                <td class="{{wizall.class}}">
+                                                        <span *ngIf="wizall.idtrans!='undefined'"><a href="#" (click)="infoTransaction(wizall)">{{wizall.idtrans}}</a></span>
+                                                        <span *ngIf="wizall.transactionid!='undefined'"><a href="#" (click)="infoTransaction(wizall)">{{wizall.transactionid}}</a></span>
+                                                        <span *ngIf="wizall.id!='undefined'"><a href="#" (click)="infoTransaction(wizall)">{{wizall.id}}</a></span>
+                                                </td>
+                                                <td class="{{wizall.class}}">
+                                                        <div *ngIf="wizall.TOKEN!='undefined'">{{wizall.TOKEN}}</div>
+                                                        <div *ngIf="wizall.type!='undefined'">{{wizall.type}}</div>
+                                                        <div *ngIf="wizall.police!='undefined'">{{wizall.police}}</div>
+                                                </td>
+                                                <td class="{{wizall.class}}">
+                                                        <span *ngIf="wizall.amount!='undefined'">{{wizall.amount}}</span>
+                                                        <span *ngIf="wizall.montant!='undefined'">{{wizall.montant}}</span>
+                                                </td>
+                                                <td class="{{wizall.class}}">
+                                                        [<!-- [<span *ngIf="tnt.sender!='undefined'"><b>sender:</b> {{wizall.sender}}</span>, -->
+                                                        <!-- <span *ngIf="tnt.receiver!='undefined'" ><b>receiver:</b>{{wizall.receiver}}</span>, -->
+                                                        ]
+                                                </td>
+                                            </tr>      
+                                        </tbody>
+                                    </table>
+                                </tab>
+                            </tabset>
+                        </div>  
+                    </accordion-group>
+                    <!--  ----------------------------------------------------
+                                              POSTCAST
+                    ------------------------------------------------------------ -->
+                    <accordion-group heading="POSTCAST" panelClass="{{postcasts.etat}}">
+                        <div>
+                            <tabset #staticTabs>
+                                <tab heading="Sentool: Totals Operations({{postcastTotalTransSentool}}) Montant ({{postcastTotalMontantSentool}})">
+
+                                </tab>
+                                <tab heading="Partenaire: Totals Operations(0) Montant ()">
+
+                                </tab>
+                                <tab heading="Tafique: Totals Operations({{postcastTotalTranstrafique}}) Montant ({{postcastTotalMontanttrafique}})">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <input type="text" class="form-control input-sm" placeholder="rechercher..." (keyup)="changerMotif($event)">
+                                            </tr>
+                                            <tr>
+                                                <th>Marchand</th>
+                                                <th>Key</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let p of postcastspostcast">
+                                                <td style="background-color:white;"><a (click)="infosSup(tnt)" href="#">{{p.marchand}}</a></td>
+                                                <td style="background-color:white;">{{p.key}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </tab>
+                                <tab heading="Confrontation">
+
+                                </tab>
+                            </tabset>
+                        </div>  
+                    </accordion-group>
+                    <!--  ----------------------------------------------------
+                                              E-MONEY
+                    ------------------------------------------------------------ -->
+                    <accordion-group heading="E-MONEY" panelClass="{{emoneys.etat}}">
+                        <div>
+                            <tabset #staticTabs>
+                                <tab heading="Sentool: Totals Operations({{emoneyTotalTransSentool}}) Montant ({{emoneyTotalMontantSentool}})">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <input type="text" class="form-control input-sm" placeholder="rechercher..." (keyup)="changerMotif($event)">
+                                            </tr>
+                                            <tr>
+                                                <th>Depends_On</th>
+                                                <th>info</th>
+                                                <th>Montant</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let emoney of emoneysSentool | filterBy: ['dependsOn', 'idUser','montant','amount']: motif | orderBy: motif1">
+                                                <td style="background-color:white;"><a (click)="infosSup(e)" href="#">{{emoney.dependsOn}}</a></td>
+                                                <td style="background-color:white;">{{emoney.infoclient}}</td>
+                                                <td style="background-color:white;">
+                                                    <span *ngIf="emoney.montant!='undefined'">{{emoney.montant}}</span>
+                                                    <span *ngIf="emoney.amount!='undefined'">{{emoney.amount}}</span>
+                                                </td>
+                                            </tr>      
+                                        </tbody>
+                                    </table>
+                                </tab>
+                                <tab heading="Partenaire: Totals Operations(0) Montant (0)">
+
+                                </tab>
+                                <tab heading="Tafique: Totals Operations({{emoneyTotalTranstrafique}}) Montant ({{emoneyTotalMontanttrafique}})">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <input type="text" class="form-control input-sm" placeholder="rechercher..." (keyup)="changerMotif($event)">
+                                                </tr>
+                                                <tr>
+                                                    <th>Depends_On</th>
+                                                    <th>Infos</th>
+                                                    <th>Montant</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let e of emoneysemoney">
+                                                    <td style="background-color:white;"><a (click)="infosSup(e)" href="#">{{e.dependsOn}}</a></td>
+                                                    <td style="background-color:white;">
+                                                        <span  *ngIf="e.destination!='undefined'">{{e.destination}}</span>
+                                                        <span *ngIf="e.tel!='undefined' ">{{e.tel}}</span>
+                                                    </td>
+                                                    <td style="background-color:white;">
+                                                        <span  *ngIf="e.amount!='undefined'">{{e.amount}}</span>
+                                                        <span *ngIf="e.montant!='undefined' ">{{e.montant}}</span>
+                                                    </td>
+                                                </tr>      
+                                            </tbody>
+                                        </table>
+                                </tab>
+                                <tab heading="Confrontation">
+
+                                </tab>
+                            </tabset>
+                        </div>  
+                    </accordion-group>
+                    <!--  ----------------------------------------------------
+                                              TIGO-CASH
+                    ------------------------------------------------------------ -->
+                    <accordion-group heading="TIGO-CASH" panelClass="{{tigocashs.etat}}">
+                        <div>
+                            <tabset #staticTabs>
+                                <tab heading="Sentool: Totals Operations({{tigocashTotalTransSentool}}) Montant ({{tigocashTotalMontantSentool}})">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <input type="text" class="form-control input-sm" placeholder="rechercher..." (keyup)="changerMotif($event)">
+                                            </tr>
+                                            <tr>
+                                                <th>Depends_On</th>
+                                                <th>infoclient</th>
+                                                <th>Montant</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let tigocash of tigocashsSentool | filterBy: ['dependsOn', 'infoclient','montant']: motif | orderBy: motif1">
+                                                <td style="background-color:white;"><a (click)="infosSup(postcast)" href="#">{{tigocash.dependsOn}}</a></td>
+                                                <td style="background-color:white;">{{tigocash.infoclient}}</td>
+                                                <td style="background-color:white;">{{tigocash.montant}}</td>
+                                            </tr>      
+                                        </tbody>
+                                    </table>
+                                </tab>
+                                <tab heading="Partenaire: Totals Operations(0) Montant ()">
+
+                                </tab>
+                                <tab heading="Tafique: Totals Operations({{tigocashTotalTranstrafique}}) Montant ({{tigocashTotalMontanttrafique}})">
+
+                                </tab>
+                                <tab heading="Confrontation">
+
+                                </tab>
+                            </tabset>
+                        </div>  
+                    </accordion-group>
+                    <!--  ----------------------------------------------------
+                                              ORANGE-MONEY
+                    ------------------------------------------------------------ -->
+                    <accordion-group heading="ORANGE MONEY"  panelClass="{{orangemoneys.etat}}">
+                        <div>
+                            <tabset #staticTabs>
+                                <tab heading="Sentool: Totals Operations({{orangemoneyTotalTransSentool}}) Montant ({{orangemoneyTotalMontantSentool}})">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <input type="text" class="form-control input-sm" placeholder="rechercher..." (keyup)="changerMotif($event)">
+                                            </tr>
+                                            <tr>
+                                                <th>Depends_On</th>
+                                                <th>info</th>
+                                                <th>Montant</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let orangemoney of orangemoneysSentool | filterBy: ['dependsOn', 'infoclient','montant']: motif | orderBy: motif1">
+                                                <td style="background-color:white;"><a (click)="infosSup(postcast)" href="#">{{orangemoney.dependsOn}}</a></td>
+                                                <td style="background-color:white;">{{orangemoney.infoclient}}</td>
+                                                <td style="background-color:white;">{{orangemoney.montant}}</td>
+                                            </tr>      
+                                        </tbody>
+                                    </table>
+                                </tab>
+                                <tab heading="Partenaire: Totals Operations({{orangemoneyTotalTranstrafique}}) Montant ({{orangemoneyTotalMontanttrafique}})">
+
+                                </tab>
+                                <tab heading="Tafique: Totals Operations(0) Montant (0)">
+
+                                </tab>
+                                <tab heading="Confrontation">
+
+                                </tab>
+                            </tabset>
+                        </div>  
+                    </accordion-group>
+                </accordion>
+            </div>
+        </div>
+</div>
+
